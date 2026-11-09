@@ -326,3 +326,142 @@ body {
     filter: blur(0);
   }
 }
+
+/* ── Intro: logo B/N → color → cortinas ─────────────────── */
+.intro {
+  display: none;
+}
+.js .intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: block;
+}
+.js.intro-gone .intro {
+  display: none;
+}
+/* Bloquea el scroll mientras el intro está visible */
+.js:not(.intro-gone) body {
+  overflow: hidden;
+}
+/* La entrada del hero espera a que se abran las cortinas */
+.js:not(.intro-open) .enter-up,
+.js:not(.intro-open) .animate-accent-flare {
+  animation-play-state: paused;
+}
+
+.intro-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  background: var(--color-canvas);
+  transition: transform 900ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+.intro-panel-left {
+  left: 0;
+}
+.intro-panel-right {
+  right: 0;
+}
+/* Borde luminoso de las cortinas, solo mientras se abren */
+.intro-open .intro-panel-left {
+  box-shadow: inset -1px 0 0 rgb(96 165 250 / 0.35);
+}
+.intro-open .intro-panel-right {
+  box-shadow: inset 1px 0 0 rgb(52 211 153 / 0.35);
+}
+.intro-open .intro-panel-left {
+  transform: translateX(-100%);
+}
+.intro-open .intro-panel-right {
+  transform: translateX(100%);
+}
+
+.intro-mark {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    opacity 300ms var(--ease-out),
+    transform 300ms var(--ease-out);
+}
+.intro-open .intro-mark {
+  opacity: 0;
+  transform: scale(0.92);
+}
+
+.intro-glow {
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgb(37 99 235 / 0.35), rgb(16 185 129 / 0.12) 45%, transparent 70%);
+  opacity: 0;
+  transform: scale(0.8);
+  transition:
+    opacity 1.6s var(--ease-out-expo),
+    transform 1.6s var(--ease-out-expo);
+}
+.intro-progress .intro-glow {
+  opacity: 0.6;
+  transform: scale(1);
+}
+.intro-done .intro-glow {
+  opacity: 1;
+}
+
+.intro-gray {
+  filter: grayscale(1) brightness(0.85);
+  opacity: 0.55;
+}
+
+/* Revelado del color solo con transform: el contenedor baja y el contenido sube en sentido contrario */
+.intro-fill,
+.intro-fill-inner {
+  position: absolute;
+  inset: 0;
+  transition: transform 1.8s var(--ease-out-expo);
+}
+.intro-fill {
+  overflow: hidden;
+  transform: translateY(100%);
+}
+.intro-fill-inner {
+  transform: translateY(-100%);
+}
+.intro-progress .intro-fill {
+  transform: translateY(22%);
+}
+.intro-progress .intro-fill-inner {
+  transform: translateY(-22%);
+}
+.intro-done .intro-fill,
+.intro-done .intro-fill-inner {
+  transform: translateY(0);
+  transition-duration: 350ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .intro {
+    transition: opacity 300ms var(--ease-out);
+  }
+  .intro-panel,
+  .intro-mark {
+    transition: none;
+  }
+  .intro-open .intro-panel-left,
+  .intro-open .intro-panel-right {
+    transform: none;
+  }
+  .js.intro-open .intro {
+    opacity: 0;
+  }
+  .intro-fill,
+  .intro-fill-inner,
+  .intro-glow {
+    transition-duration: 300ms;
+  }
+}

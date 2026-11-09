@@ -17,7 +17,7 @@ export function Hero() {
       <Container className="flex flex-col items-center text-center">
         <div className="enter-up relative">
           <div className="absolute inset-0 -z-10 scale-150 rounded-full bg-blue/30 blur-3xl" aria-hidden="true" />
-          <Isotipo size={112} priority className="size-20 drop-shadow-[0_18px_40px_rgba(37,99,235,0.55)] sm:size-28" />
+          <Isotipo size={112} className="size-20 drop-shadow-[0_18px_40px_rgba(37,99,235,0.55)] sm:size-28" />
         </div>
 
         <p

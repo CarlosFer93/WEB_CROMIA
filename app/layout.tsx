@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { IntroCurtain, introScript } from "@/components/layout/IntroCurtain";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -84,8 +85,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es-CO" className={`${poppins.variable} antialiased`} suppressHydrationWarning>
       <body className="flex min-h-svh flex-col bg-canvas text-fg">
-        {/* Marca que hay JS: habilita las animaciones de aparición sin ocultar contenido cuando no lo hay */}
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        {/* Marca que hay JS y controla el intro (logo B/N → color → cortinas) sin esperar a React */}
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+        <IntroCurtain />
         <OrganizationJsonLd />
         <a
           href="#contenido"
