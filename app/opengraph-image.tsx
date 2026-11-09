@@ -22,9 +22,9 @@ export default async function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "72px 80px",
-          backgroundColor: "#0B2D5B",
+          backgroundColor: "#000000",
           backgroundImage:
-            "radial-gradient(circle at 88% 20%, rgba(37,99,235,0.55) 0%, rgba(11,45,91,0) 45%), radial-gradient(circle at 75% 95%, rgba(16,185,129,0.40) 0%, rgba(11,45,91,0) 45%)",
+            "radial-gradient(circle at 85% 15%, rgba(37,99,235,0.45) 0%, rgba(0,0,0,0) 45%), radial-gradient(circle at 70% 100%, rgba(16,185,129,0.30) 0%, rgba(0,0,0,0) 45%)",
           fontFamily: "Poppins",
           color: "white",
         }}
@@ -48,7 +48,7 @@ export default async function OpengraphImage() {
         >
           Automatizamos procesos con IA para impulsar el futuro de tu negocio
         </div>
-        <div style={{ display: "flex", marginTop: 28, fontSize: 26, fontWeight: 500, color: "#CBD5E1" }}>
+        <div style={{ display: "flex", marginTop: 28, fontSize: 26, fontWeight: 500, color: "#8E8E94" }}>
           Inteligencia que transforma procesos.
         </div>
         <div

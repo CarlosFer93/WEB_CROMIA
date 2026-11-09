@@ -1,67 +1,66 @@
-import { ArrowDown, AppWindow, Database, Workflow } from "lucide-react";
+import { AppWindow, Database, Workflow } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { Frame, Knob } from "@/components/ui/Frame";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { architecture } from "@/lib/content";
 
-const accentStyles = {
-  navy: { border: "border-l-navy", icon: "bg-navy text-white", chip: "bg-navy/5 text-navy ring-navy/10" },
-  blue: { border: "border-l-blue", icon: "bg-blue text-white", chip: "bg-blue/5 text-blue ring-blue/15" },
-  green: {
-    border: "border-l-green",
-    icon: "bg-green text-navy",
-    chip: "bg-green/10 text-green-ink ring-green/20",
-  },
+const accent = {
+  navy: { icon: "text-white", dot: "bg-white/70", chip: "text-white/80" },
+  blue: { icon: "text-blue-soft", dot: "bg-blue-soft", chip: "text-blue-soft" },
+  green: { icon: "text-green", dot: "bg-green", chip: "text-green" },
 } as const;
 
 const layerIcons = [Database, Workflow, AppWindow];
 
 export function Architecture() {
   return (
-    <section aria-labelledby="arquitectura-title" className="bg-white py-20 sm:py-28">
-      <Container>
+    <section aria-labelledby="arquitectura-title" className="py-20 sm:py-28">
+      <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
         <SectionHeading
           id="arquitectura-title"
           eyebrow={architecture.eyebrow}
           title={architecture.title}
           subtitle={architecture.subtitle}
+          className="lg:sticky lg:top-28 lg:self-start"
         />
 
-        <ol className="mx-auto mt-14 flex max-w-4xl flex-col items-center">
+        <ol className="relative flex flex-col gap-4">
+          {/* Conector vertical con pulso */}
+          <span
+            className="animate-scan-y absolute bottom-12 left-[2.65rem] top-12 hidden w-px overflow-hidden bg-white/10 sm:block"
+            aria-hidden="true"
+          />
           {architecture.layers.map((layer, i) => {
-            const s = accentStyles[layer.accent];
+            const s = accent[layer.accent];
             const Icon = layerIcons[i];
             return (
-              <li key={layer.name} className="flex w-full flex-col items-center">
-                <Reveal delay={i * 0.1} className="w-full">
-                  <div
-                    className={`w-full rounded-2xl border border-slate-200 border-l-4 bg-white p-6 shadow-md shadow-navy/5 sm:p-7 ${s.border}`}
-                  >
-                    <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-                      <div className="flex items-center gap-3 sm:w-64 sm:shrink-0">
-                        <span className={`flex size-10 items-center justify-center rounded-xl ${s.icon}`} aria-hidden="true">
-                          <Icon className="size-5" />
-                        </span>
-                        <h3 className="text-sm font-bold uppercase leading-snug tracking-wider text-navy">
-                          {layer.name}
-                        </h3>
+              <Reveal as="li" key={layer.name} delay={i * 0.08} className="relative flex">
+                <Frame className="flex-1" innerClassName="p-5 sm:p-6">
+                  <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+                    <Knob size="sm" className={s.icon}>
+                      <Icon className="size-5" />
+                    </Knob>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 text-xs text-muted">
+                        <span className={`size-1.5 rounded-full ${s.dot}`} aria-hidden="true" />
+                        capa {String(i + 1).padStart(2, "0")}
                       </div>
-                      <ul className="flex flex-wrap gap-2">
+                      <h3 className="mt-1 text-card-title font-semibold text-fg">{layer.name}</h3>
+                      <ul className="mt-4 flex flex-wrap gap-2">
                         {layer.items.map((item) => (
-                          <li key={item} className={`rounded-lg px-3 py-1.5 text-sm font-medium ring-1 ${s.chip}`}>
+                          <li
+                            key={item}
+                            className={`rounded-lg bg-white/[0.04] px-3 py-1.5 font-mono text-xs ring-1 ring-white/[0.08] ${s.chip}`}
+                          >
                             {item}
                           </li>
                         ))}
                       </ul>
                     </div>
                   </div>
-                </Reveal>
-                {i < architecture.layers.length - 1 && (
-                  <span className="my-3 flex size-8 items-center justify-center rounded-full bg-ice text-blue" aria-hidden="true">
-                    <ArrowDown className="size-4" />
-                  </span>
-                )}
-              </li>
+                </Frame>
+              </Reveal>
             );
           })}
         </ol>

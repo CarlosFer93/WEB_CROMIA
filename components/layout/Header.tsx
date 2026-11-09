@@ -4,6 +4,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
+import { ButtonLink } from "@/components/ui/Button";
 import { navItems } from "@/lib/site-config";
 
 function subscribeScroll(callback: () => void) {
@@ -12,6 +13,9 @@ function subscribeScroll(callback: () => void) {
 }
 const getScrolled = () => window.scrollY > 24;
 const getServerScrolled = () => false;
+
+const pill =
+  "rounded-full bg-black/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_0_1px_rgba(255,255,255,0.1)] backdrop-blur-xl";
 
 export function Header() {
   const scrolled = useSyncExternalStore(subscribeScroll, getScrolled, getServerScrolled);
@@ -36,7 +40,7 @@ export function Header() {
     return () => observer.disconnect();
   }, []);
 
-  // Cierra el menú móvil con Escape y bloquea el scroll del fondo.
+  // Escape cierra el menú móvil; se bloquea el scroll del fondo mientras está abierto.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -49,72 +53,60 @@ export function Header() {
     };
   }, [open]);
 
-  const solid = scrolled || open;
-
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300 ${
-        solid
-          ? "bg-navy/95 shadow-lg shadow-navy-950/30 backdrop-blur-md"
-          : "bg-transparent"
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color] duration-(--duration-slow) ${
+        scrolled || open ? "border-b border-white/[0.06] bg-black/50 backdrop-blur-xl" : "border-b border-transparent"
       }`}
     >
       <nav
         aria-label="Navegación principal"
-        className="mx-auto flex h-[var(--header-h)] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8"
+        className="mx-auto flex h-[var(--header-h)] max-w-[1200px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8"
       >
         <Link href="/#inicio" className="rounded-lg" aria-label="CromIA — ir al inicio">
-          <Logo tone="dark" size={34} textClassName="text-[1.45rem]" priority />
+          <Logo tone="dark" size={28} textClassName="text-lg tracking-[-0.02em]" />
         </Link>
 
-        <ul className="hidden items-center gap-1 lg:flex">
-          {navItems.map((item) => {
-            const isActive = active === item.id;
-            return (
-              <li key={item.id}>
-                <Link
-                  href={item.href}
-                  aria-current={isActive ? "true" : undefined}
-                  className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-white ${
-                    isActive ? "text-white" : "text-slate-300"
-                  }`}
-                >
-                  {item.label}
-                  <span
-                    aria-hidden="true"
-                    className={`absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-brand-gradient transition-opacity ${
-                      isActive ? "opacity-100" : "opacity-0"
+        <div className={`hidden items-center gap-1 p-1 lg:flex ${pill}`}>
+          <ul className="flex items-center">
+            {navItems.slice(1).map((item) => {
+              const isActive = active === item.id;
+              return (
+                <li key={item.id}>
+                  <Link
+                    href={item.href}
+                    aria-current={isActive ? "true" : undefined}
+                    className={`inline-flex h-9 items-center rounded-full px-4 text-sm font-medium tracking-[-0.02em] transition-colors duration-(--duration-base) ${
+                      isActive ? "bg-white/[0.08] text-fg" : "text-white/60 hover:text-fg"
                     }`}
-                  />
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-
-        <Link
-          href="/#contacto"
-          className="hidden rounded-full bg-green px-5 py-2.5 text-sm font-semibold text-navy shadow-md shadow-green/20 transition hover:bg-emerald-400 lg:inline-flex"
-        >
-          Agenda un diagnóstico
-        </Link>
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+          <ButtonLink href="/#contacto" size="sm" className="ml-1 !h-9 !px-4">
+            Agenda un diagnóstico
+          </ButtonLink>
+        </div>
 
         <button
           type="button"
-          className="inline-flex size-11 items-center justify-center rounded-xl text-white hover:bg-white/10 lg:hidden"
+          className={`inline-flex size-11 items-center justify-center text-fg lg:hidden ${pill}`}
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
           onClick={() => setOpen((v) => !v)}
         >
-          {open ? <X className="size-6" aria-hidden="true" /> : <Menu className="size-6" aria-hidden="true" />}
+          {open ? <X className="size-5" aria-hidden="true" /> : <Menu className="size-5" aria-hidden="true" />}
         </button>
       </nav>
 
       <div
         id="mobile-menu"
         hidden={!open}
-        className="h-[calc(100dvh-var(--header-h))] overflow-y-auto border-t border-white/10 bg-navy lg:hidden"
+        className="h-[calc(100dvh-var(--header-h))] overflow-y-auto bg-black/95 backdrop-blur-xl lg:hidden"
       >
         <ul className="flex flex-col gap-1 px-4 py-6 sm:px-6">
           {navItems.map((item) => (
@@ -123,8 +115,8 @@ export function Header() {
                 href={item.href}
                 onClick={() => setOpen(false)}
                 aria-current={active === item.id ? "true" : undefined}
-                className={`block rounded-xl px-4 py-3 text-lg font-medium hover:bg-white/5 ${
-                  active === item.id ? "text-green" : "text-white"
+                className={`flex min-h-12 items-center rounded-xl px-4 text-2xl font-semibold tracking-[-0.03em] hover:bg-white/5 ${
+                  active === item.id ? "text-green" : "text-fg"
                 }`}
               >
                 {item.label}
@@ -133,13 +125,9 @@ export function Header() {
           ))}
         </ul>
         <div className="px-4 sm:px-6">
-          <Link
-            href="/#contacto"
-            onClick={() => setOpen(false)}
-            className="flex w-full items-center justify-center rounded-full bg-green px-6 py-3.5 font-semibold text-navy"
-          >
+          <ButtonLink href="/#contacto" className="w-full" onClick={() => setOpen(false)}>
             Agenda un diagnóstico
-          </Link>
+          </ButtonLink>
         </div>
       </div>
     </header>

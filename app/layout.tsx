@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { MotionProvider } from "@/components/ui/MotionProvider";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -45,7 +44,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B2D5B",
+  themeColor: "#000000",
   width: "device-width",
   initialScale: 1,
 };
@@ -83,22 +82,22 @@ function OrganizationJsonLd() {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es-CO" className={`${poppins.variable} antialiased`}>
-      <body className="flex min-h-svh flex-col">
+    <html lang="es-CO" className={`${poppins.variable} antialiased`} suppressHydrationWarning>
+      <body className="flex min-h-svh flex-col bg-canvas text-fg">
+        {/* Marca que hay JS: habilita las animaciones de aparición sin ocultar contenido cuando no lo hay */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         <OrganizationJsonLd />
         <a
           href="#contenido"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:font-semibold focus:text-navy"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:font-semibold focus:text-black"
         >
           Saltar al contenido
         </a>
-        <MotionProvider>
-          <Header />
-          <main id="contenido" className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        </MotionProvider>
+        <Header />
+        <main id="contenido" className="flex-1">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );

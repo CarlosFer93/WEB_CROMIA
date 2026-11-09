@@ -1,27 +1,34 @@
 "use client";
 
-import { m } from "framer-motion";
+import { useRef } from "react";
+import { useInView } from "framer-motion";
 
 type RevealProps = {
   children: React.ReactNode;
   className?: string;
   /** Retraso en segundos (útil para listas escalonadas). */
   delay?: number;
-  as?: "div" | "li" | "article";
+  as?: "div" | "li" | "article" | "section";
 };
 
-/** Aparición sutil al hacer scroll. Con reduced-motion solo hace fundido. */
-export function Reveal({ children, className, delay = 0, as = "div" }: RevealProps) {
-  const Component = m[as];
+/**
+ * Aparición al entrar en pantalla (una sola vez): opacidad + desplazamiento + blur.
+ * La animación vive en CSS (`[data-reveal]` en globals.css) y solo se activa si hay JS
+ * y el usuario no pidió reducir el movimiento.
+ */
+export function Reveal({ children, className, delay = 0, as: Tag = "div" }: RevealProps) {
+  const ref = useRef<HTMLElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.15 });
   return (
-    <Component
+    <Tag
+      // @ts-expect-error — ref polimórfico compatible con todos los elementos permitidos
+      ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+      data-reveal=""
+      data-shown={inView ? "" : undefined}
+      style={delay ? ({ "--reveal-delay": `${Math.round(delay * 1000)}ms` } as React.CSSProperties) : undefined}
     >
       {children}
-    </Component>
+    </Tag>
   );
 }

@@ -1,4 +1,7 @@
+import { ArrowUpRight } from "lucide-react";
+import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { Frame, Knob } from "@/components/ui/Frame";
 import { Isotipo } from "@/components/ui/Logo";
 import { Reveal } from "@/components/ui/Reveal";
 import { Badge } from "@/components/ui/SectionHeading";
@@ -12,16 +15,37 @@ type ShowcaseData = {
   items: IconItem[];
 };
 
-function BrandPanel({ brand, id }: { brand: ShowcaseData["brand"]; id: string }) {
+/** Tarjeta destacada (inspirada en la tarjeta de precio): azul con brillo que se desplaza. */
+function FeatureCard({ data, tone }: { data: ShowcaseData; tone: "blue" | "dark" }) {
+  const blue = tone === "blue";
   return (
-    <div className="relative flex flex-col items-center justify-center overflow-hidden rounded-3xl bg-white px-8 py-14 shadow-xl shadow-navy/10 ring-1 ring-slate-100">
-      <div className="absolute -right-10 -top-10 size-40 rounded-full bg-green/10 blur-2xl" aria-hidden="true" />
-      <div className="absolute -bottom-10 -left-10 size-40 rounded-full bg-blue/10 blur-2xl" aria-hidden="true" />
-      <Isotipo size={128} className="relative drop-shadow-xl" />
-      <p className="relative mt-5 text-4xl font-extrabold tracking-tight sm:text-5xl" id={id}>
-        <span className="text-navy">{brand.first}</span>
-        <span className="text-green-deep">{brand.second}</span>
-      </p>
+    <div
+      className={`relative overflow-hidden rounded-[2rem] p-8 sm:p-10 ${
+        blue
+          ? "bg-[linear-gradient(180deg,#0e2a6b_0%,#1d4ed8_60%,#2563eb_100%)] shadow-[0_50px_120px_-40px_rgba(0,0,0,0.95),0_0_0_1px_rgba(90,130,255,0.25),0_0_60px_-12px_rgba(60,120,255,0.45)]"
+          : "bg-[linear-gradient(180deg,#0b1a14_0%,#06261c_55%,#064e3b_100%)] shadow-[0_50px_120px_-40px_rgba(0,0,0,0.95),0_0_0_1px_rgba(16,185,129,0.25),0_0_60px_-12px_rgba(16,185,129,0.35)]"
+      }`}
+    >
+      <div
+        className={`animate-glow-drift pointer-events-none absolute -left-10 top-0 size-52 rounded-full blur-3xl ${
+          blue ? "bg-blue-soft/40" : "bg-green/30"
+        }`}
+        aria-hidden="true"
+      />
+      <div className="relative flex flex-col items-center text-center">
+        <Isotipo size={88} className="drop-shadow-[0_18px_30px_rgba(0,0,0,0.5)]" />
+        <p className="mt-4 text-[clamp(3rem,7vw,4.5rem)] font-semibold leading-none tracking-[-0.05em]">
+          <span className="text-chrome">{data.brand.first}</span>
+          <span className={blue ? "text-white" : "text-green-soft"}>{data.brand.second}</span>
+        </p>
+      </div>
+      <div className="relative mt-8 flex flex-col items-center gap-3 text-center">
+        <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-navy-950">{data.badge}</span>
+        <ButtonLink href="#contacto" variant="light" className="mt-4 w-full !px-4 text-sm whitespace-nowrap sm:text-[0.9375rem]">
+          {blue ? "Hablemos de tu institución" : "Hablemos de tu empresa"}
+          <ArrowUpRight className="size-4" aria-hidden="true" />
+        </ButtonLink>
+      </div>
     </div>
   );
 }
@@ -30,58 +54,43 @@ function Showcase({
   data,
   id,
   reverse = false,
-  variant,
-  bg,
+  tone,
 }: {
   data: ShowcaseData;
   id: string;
   reverse?: boolean;
-  variant: "list" | "cards";
-  bg: string;
+  tone: "blue" | "dark";
 }) {
   return (
-    <section aria-labelledby={`${id}-title`} className={`${bg} py-20 sm:py-28`}>
-      <Container
-        className={`grid items-center gap-12 lg:gap-16 ${
-          reverse ? "lg:grid-cols-[1.25fr_0.75fr]" : "lg:grid-cols-[0.75fr_1.25fr]"
-        }`}
-      >
+    <section aria-labelledby={`${id}-title`} className="py-20 sm:py-28">
+      <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <Reveal className={reverse ? "lg:order-2" : ""}>
-          <BrandPanel brand={data.brand} id={`${id}-brand`} />
+          <FeatureCard data={data} tone={tone} />
         </Reveal>
 
         <div>
           <Reveal>
             <Badge>{data.badge}</Badge>
-            <h2
-              id={`${id}-title`}
-              className="mt-4 text-3xl font-extrabold leading-tight tracking-tight text-navy sm:text-4xl lg:text-5xl"
-            >
+            <h2 id={`${id}-title`} className="mt-5 text-title font-semibold text-fg">
               {data.title}
             </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink sm:text-lg">{data.subtitle}</p>
+            <p className="mt-4 max-w-xl text-base leading-8 text-muted sm:text-lg">{data.subtitle}</p>
           </Reveal>
 
-          <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+          <ul className="mt-10 grid gap-3 sm:grid-cols-2">
             {data.items.map((item, i) => {
               const Icon = item.icon;
-              const accent = variant === "cards" ? (i % 2 === 0 ? "border-l-green" : "border-l-blue") : "border-l-blue";
               return (
-                <Reveal as="li" key={item.title} delay={i * 0.08}>
-                  <article
-                    className={`flex h-full gap-4 rounded-2xl border border-slate-200 border-l-4 bg-white p-5 shadow-sm shadow-navy/5 transition hover:shadow-md ${accent}`}
-                  >
-                    <span
-                      className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-ice text-blue"
-                      aria-hidden="true"
-                    >
+                <Reveal as="li" key={item.title} delay={i * 0.06} className="flex">
+                  <Frame className="flex-1" innerClassName="gap-4 p-5">
+                    <Knob size="sm" className={tone === "blue" ? "text-blue-soft" : "text-green"}>
                       <Icon className="size-5" />
-                    </span>
+                    </Knob>
                     <div>
-                      <h3 className="font-bold text-navy">{item.title}</h3>
-                      <p className="mt-1 text-sm leading-relaxed text-ink">{item.description}</p>
+                      <h3 className="text-[0.9375rem] font-semibold tracking-[-0.01em] text-fg">{item.title}</h3>
+                      <p className="mt-1 text-sm leading-6 text-muted">{item.description}</p>
                     </div>
-                  </article>
+                  </Frame>
                 </Reveal>
               );
             })}
@@ -93,9 +102,9 @@ function Showcase({
 }
 
 export function Education() {
-  return <Showcase data={education} id="education" variant="list" bg="bg-ice" />;
+  return <Showcase data={education} id="education" tone="blue" />;
 }
 
 export function Corporate() {
-  return <Showcase data={corporate} id="corporate" variant="cards" bg="bg-white" reverse />;
+  return <Showcase data={corporate} id="corporate" tone="dark" reverse />;
 }

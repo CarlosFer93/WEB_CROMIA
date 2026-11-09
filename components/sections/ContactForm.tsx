@@ -12,13 +12,14 @@ import {
   type ContactField,
 } from "@/lib/contact";
 import { contact } from "@/lib/content";
+import { buttonClass } from "@/components/ui/Button";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 const inputBase =
-  "mt-2 block w-full rounded-xl border bg-white px-4 py-3 text-base text-navy placeholder:text-slate-400 shadow-sm transition focus:outline-none focus:ring-4";
-const inputOk = "border-slate-300 focus:border-blue focus:ring-blue/20";
-const inputErr = "border-red-500 focus:border-red-500 focus:ring-red-500/20";
+  "mt-2 block w-full rounded-(--radius-card) border bg-black px-4 py-3 text-base text-fg placeholder:text-white/35 shadow-[inset_0_1px_2px_rgba(0,0,0,0.6)] transition-[border-color,box-shadow] duration-(--duration-base) focus:outline-none focus:ring-4";
+const inputOk = "border-white/12 hover:border-white/20 focus:border-green/70 focus:ring-green/15";
+const inputErr = "border-red-400/80 focus:border-red-400 focus:ring-red-400/20";
 
 export function ContactForm() {
   const uid = useId();
@@ -46,7 +47,7 @@ export function ContactForm() {
   function errorText(f: ContactField) {
     if (!errors[f]) return null;
     return (
-      <p id={errId(f)} className="mt-1.5 text-sm font-medium text-red-600">
+      <p id={errId(f)} className="mt-1.5 text-sm font-medium text-red-400">
         {errors[f]}
       </p>
     );
@@ -99,17 +100,17 @@ export function ContactForm() {
     return (
       <div
         role="status"
-        className="flex min-h-[28rem] flex-col items-center justify-center rounded-3xl bg-white p-10 text-center shadow-2xl shadow-navy-950/40"
+        className="frame flex min-h-[28rem] flex-col items-center justify-center p-10 text-center"
       >
-        <span className="flex size-16 items-center justify-center rounded-full bg-green/15 text-green-ink">
+        <span className="knob size-16 text-green">
           <CircleCheck className="size-9" aria-hidden="true" />
         </span>
-        <h3 className="mt-6 text-2xl font-bold text-navy">{contact.successTitle}</h3>
-        <p className="mt-2 max-w-sm text-ink">{contact.successBody}</p>
+        <h3 className="mt-6 text-2xl font-semibold tracking-[-0.03em] text-fg">{contact.successTitle}</h3>
+        <p className="mt-2 max-w-sm text-muted">{contact.successBody}</p>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-8 rounded-full px-6 py-3 font-semibold text-blue ring-1 ring-blue/30 transition hover:bg-blue/5"
+          className={buttonClass("secondary", "md", "mt-8")}
         >
           Enviar otro mensaje
         </button>
@@ -124,17 +125,17 @@ export function ContactForm() {
       noValidate
       onSubmit={onSubmit}
       aria-describedby={`${uid}-required-note`}
-      className="relative rounded-3xl bg-white p-6 shadow-2xl shadow-navy-950/40 sm:p-9"
+      className="frame relative"
     >
-      <div className="absolute inset-x-8 top-0 h-1 rounded-b-full bg-brand-gradient" aria-hidden="true" />
-      <h3 className="text-xl font-bold text-navy sm:text-2xl">Agenda un diagnóstico</h3>
-      <p id={`${uid}-required-note`} className="mt-1 text-sm text-ink">
+      <div className="card p-6 sm:p-9">
+      <h3 className="text-xl font-semibold tracking-[-0.03em] text-fg sm:text-2xl">Agenda un diagnóstico</h3>
+      <p id={`${uid}-required-note`} className="mt-1 text-sm text-muted">
         Todos los campos son obligatorios.
       </p>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor={fieldId("name")} className="text-sm font-semibold text-navy">
+          <label htmlFor={fieldId("name")} className="text-sm font-medium text-fg">
             Nombre
           </label>
           <input
@@ -148,7 +149,7 @@ export function ContactForm() {
           {errorText("name")}
         </div>
         <div>
-          <label htmlFor={fieldId("company")} className="text-sm font-semibold text-navy">
+          <label htmlFor={fieldId("company")} className="text-sm font-medium text-fg">
             Empresa u organización
           </label>
           <input
@@ -162,7 +163,7 @@ export function ContactForm() {
           {errorText("company")}
         </div>
         <div>
-          <label htmlFor={fieldId("email")} className="text-sm font-semibold text-navy">
+          <label htmlFor={fieldId("email")} className="text-sm font-medium text-fg">
             Correo electrónico
           </label>
           <input
@@ -177,7 +178,7 @@ export function ContactForm() {
           {errorText("email")}
         </div>
         <div>
-          <label htmlFor={fieldId("sector")} className="text-sm font-semibold text-navy">
+          <label htmlFor={fieldId("sector")} className="text-sm font-medium text-fg">
             Sector
           </label>
           <select {...fieldProps("sector")} defaultValue="" required>
@@ -193,7 +194,7 @@ export function ContactForm() {
           {errorText("sector")}
         </div>
         <div className="sm:col-span-2">
-          <label htmlFor={fieldId("message")} className="text-sm font-semibold text-navy">
+          <label htmlFor={fieldId("message")} className="text-sm font-medium text-fg">
             Mensaje
           </label>
           <textarea
@@ -216,7 +217,7 @@ export function ContactForm() {
       {status === "error" && serverError && (
         <div
           role="alert"
-          className="mt-6 flex items-start gap-3 rounded-xl bg-red-50 p-4 text-sm font-medium text-red-700 ring-1 ring-red-200"
+          className="mt-6 flex items-start gap-3 rounded-xl bg-red-500/10 p-4 text-sm font-medium text-red-300 ring-1 ring-red-400/25"
         >
           <TriangleAlert className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
           <p>{serverError}</p>
@@ -226,7 +227,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={loading}
-        className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-full bg-green px-7 py-3.5 text-base font-semibold text-navy shadow-lg shadow-green/25 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+        className={buttonClass("primary", "md", "mt-7 w-full disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto")}
       >
         {loading ? (
           <>
@@ -243,6 +244,7 @@ export function ContactForm() {
       <p className="sr-only" aria-live="polite">
         {loading ? "Enviando mensaje" : ""}
       </p>
+      </div>
     </form>
   );
 }

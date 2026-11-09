@@ -4,40 +4,22 @@ type Props = {
   eyebrow?: string;
   title: React.ReactNode;
   subtitle?: React.ReactNode;
-  tone?: "light" | "dark";
   align?: "center" | "left";
   id?: string;
+  className?: string;
 };
 
-/** Encabezado de sección: etiqueta pequeña + título + subtítulo. */
-export function SectionHeading({
-  eyebrow,
-  title,
-  subtitle,
-  tone = "light",
-  align = "center",
-  id,
-}: Props) {
-  const dark = tone === "dark";
+/** Encabezado de sección: etiqueta + título compacto + subtítulo atenuado. */
+export function SectionHeading({ eyebrow, title, subtitle, align = "left", id, className = "" }: Props) {
+  const center = align === "center";
   return (
-    <Reveal
-      className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : "text-left"}`}
-    >
-      {eyebrow && <Eyebrow tone={tone}>{eyebrow}</Eyebrow>}
-      <h2
-        id={id}
-        className={`mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl lg:text-[2.75rem] ${
-          dark ? "text-white" : "text-navy"
-        }`}
-      >
+    <Reveal className={`max-w-3xl ${center ? "mx-auto text-center" : ""} ${className}`}>
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      <h2 id={id} className="mt-3 text-title font-semibold text-fg">
         {title}
       </h2>
       {subtitle && (
-        <p
-          className={`mt-4 text-base leading-relaxed sm:text-lg ${
-            dark ? "text-slate-300" : "text-ink"
-          }`}
-        >
+        <p className={`mt-4 text-base leading-7 text-muted sm:text-lg sm:leading-8 ${center ? "mx-auto max-w-2xl" : "max-w-xl"}`}>
           {subtitle}
         </p>
       )}
@@ -45,56 +27,21 @@ export function SectionHeading({
   );
 }
 
-export function Eyebrow({
-  children,
-  tone = "light",
-}: {
-  children: React.ReactNode;
-  tone?: "light" | "dark";
-}) {
+/** Etiqueta pequeña sobre los títulos. */
+export function Eyebrow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <p
-      className={`text-xs font-semibold uppercase tracking-[0.2em] ${
-        tone === "dark" ? "text-green" : "text-green-ink"
-      }`}
-    >
+    <p className={`inline-flex items-center gap-2 text-[0.8125rem] font-medium text-muted ${className}`}>
+      <span className="size-1.5 rounded-full bg-green shadow-[0_0_10px_2px_rgba(16,185,129,0.6)]" aria-hidden="true" />
       {children}
     </p>
   );
 }
 
-export function Badge({
-  children,
-  tone = "light",
-}: {
-  children: React.ReactNode;
-  tone?: "light" | "dark";
-}) {
+/** Píldora de cristal (badges). */
+export function Badge({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <span
-      className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wider ${
-        tone === "dark"
-          ? "bg-green/15 text-green ring-1 ring-green/30"
-          : "bg-green/10 text-green-ink ring-1 ring-green/25"
-      }`}
-    >
-      {children}
-    </span>
-  );
-}
-
-/** Chip de icono con degradado de marca. */
-export function IconBadge({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <span
-      className={`inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-gradient text-white shadow-md shadow-blue/20 ${className}`}
-      aria-hidden="true"
+      className={`inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-3 py-1 text-xs font-medium text-fg ring-1 ring-white/10 backdrop-blur ${className}`}
     >
       {children}
     </span>

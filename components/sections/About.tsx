@@ -1,58 +1,55 @@
-import { ArrowDown } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { Frame, Knob } from "@/components/ui/Frame";
 import { Reveal } from "@/components/ui/Reveal";
 import { Eyebrow } from "@/components/ui/SectionHeading";
 import { about } from "@/lib/content";
 
-const accents = ["border-l-blue", "border-l-blue", "border-l-green"];
-const iconColors = ["text-blue", "text-blue", "text-green-ink"];
-
 export function About() {
   return (
-    <section id="que-es" aria-labelledby="about-title" className="bg-white py-20 sm:py-28">
-      <Container className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+    <section id="que-es" aria-labelledby="about-title" className="py-20 sm:py-28">
+      <Container className="grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
         <Reveal>
           <Eyebrow>{about.eyebrow}</Eyebrow>
-          <h2
-            id="about-title"
-            className="mt-3 text-3xl font-extrabold leading-tight tracking-tight text-navy sm:text-4xl lg:text-5xl"
-          >
+          <h2 id="about-title" className="mt-3 text-title font-semibold text-fg">
             {about.title}
           </h2>
           {about.body.map((p) => (
-            <p key={p} className="mt-5 max-w-xl text-base leading-relaxed text-ink sm:text-lg">
+            <p key={p} className="mt-5 max-w-xl text-base leading-8 text-muted sm:text-lg">
               {p}
             </p>
           ))}
         </Reveal>
 
-        <ol className="mx-auto flex w-full max-w-md flex-col items-stretch" aria-label="Cómo funciona CromIA">
-          {about.flow.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <li key={step.title} className="flex flex-col items-center">
-                <Reveal delay={i * 0.1} className="w-full">
-                  <div
-                    className={`flex w-full items-center gap-4 rounded-2xl border border-slate-200 border-l-4 bg-white p-5 shadow-sm shadow-navy/5 ${accents[i]}`}
-                  >
-                    <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-ice">
-                      <Icon className={`size-6 ${iconColors[i]}`} aria-hidden="true" />
-                    </span>
-                    <div>
-                      <p className="font-bold text-navy">{step.title}</p>
-                      <p className="mt-0.5 text-sm text-ink">{step.description}</p>
+        <Reveal delay={0.1}>
+          <Frame innerClassName="p-6 sm:p-8">
+            {/* barra superior tipo ventana */}
+            <div className="mb-6 flex items-center gap-2 text-xs text-muted">
+              <span className="size-2 rounded-full bg-green" aria-hidden="true" />
+              cromia / flujo-inteligente
+            </div>
+            <ol className="relative flex flex-col gap-5" aria-label="Cómo funciona CromIA">
+              {/* Conector vertical con pulso de datos */}
+              <span
+                className="animate-scan-y absolute bottom-10 left-8 top-10 w-px overflow-hidden bg-white/10"
+                aria-hidden="true"
+              />
+              {about.flow.map((step, i) => {
+                const Icon = step.icon;
+                return (
+                  <li key={step.title} className="relative flex items-center gap-5">
+                    <Knob className={i === about.flow.length - 1 ? "text-green" : "text-blue-soft"}>
+                      <Icon className="size-6" />
+                    </Knob>
+                    <div className="flex-1 rounded-xl border border-white/[0.06] bg-white/[0.02] px-5 py-4">
+                      <p className="text-card-title font-semibold text-fg">{step.title}</p>
+                      <p className="mt-0.5 text-sm text-muted">{step.description}</p>
                     </div>
-                  </div>
-                </Reveal>
-                {i < about.flow.length - 1 && (
-                  <span className="my-2 flex size-8 items-center justify-center text-slate-400" aria-hidden="true">
-                    <ArrowDown className="size-5" />
-                  </span>
-                )}
-              </li>
-            );
-          })}
-        </ol>
+                  </li>
+                );
+              })}
+            </ol>
+          </Frame>
+        </Reveal>
       </Container>
     </section>
   );
