@@ -7,15 +7,6 @@ import { InstagramIcon, LinkedInIcon } from "@/components/ui/SocialIcons";
 import { sectors } from "@/lib/content";
 import { navItems, siteConfig, type ContactChannel } from "@/lib/site-config";
 
-function PendingTag({ pending }: { pending: boolean }) {
-  if (!pending) return null;
-  return (
-    <span className="whitespace-nowrap rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-300 ring-1 ring-amber-400/30">
-      Por definir
-    </span>
-  );
-}
-
 function ChannelLink({
   channel,
   icon,
@@ -39,13 +30,19 @@ function ChannelLink({
         <span className="sr-only">{label}: </span>
         {channel.value}
       </span>
-      <PendingTag pending={channel.pending} />
     </a>
   );
 }
 
 export function Footer() {
   const { contact, social } = siteConfig;
+  // Los canales con `pending: true` en lib/site-config.ts no se muestran.
+  const channels = [
+    { label: "Correo", channel: contact.email, icon: <Mail className="size-4" aria-hidden="true" /> },
+    { label: "WhatsApp", channel: contact.whatsapp, icon: <MessageCircle className="size-4" aria-hidden="true" /> },
+    { label: "LinkedIn de CromIA", channel: social.linkedin, icon: <LinkedInIcon className="size-4" /> },
+    { label: "Instagram de CromIA", channel: social.instagram, icon: <InstagramIcon className="size-4" /> },
+  ];
   return (
     <footer className="border-t border-white/[0.08] bg-canvas text-white/65">
       <div className="mx-auto grid max-w-[1200px] gap-12 px-4 py-16 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.3fr] lg:px-8">
@@ -88,18 +85,13 @@ export function Footer() {
         <div>
           <h2 className="text-xs font-medium text-muted">Contacto</h2>
           <ul className="mt-4 space-y-3 text-sm">
-            <li>
-              <ChannelLink channel={contact.email} label="Correo" icon={<Mail className="size-4" aria-hidden="true" />} />
-            </li>
-            <li>
-              <ChannelLink channel={contact.whatsapp} label="WhatsApp" icon={<MessageCircle className="size-4" aria-hidden="true" />} />
-            </li>
-            <li>
-              <ChannelLink channel={social.linkedin} label="LinkedIn de CromIA" icon={<LinkedInIcon className="size-4" />} />
-            </li>
-            <li>
-              <ChannelLink channel={social.instagram} label="Instagram de CromIA" icon={<InstagramIcon className="size-4" />} />
-            </li>
+            {channels
+              .filter((c) => !c.channel.pending)
+              .map((c) => (
+                <li key={c.label}>
+                  <ChannelLink channel={c.channel} label={c.label} icon={c.icon} />
+                </li>
+              ))}
           </ul>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { Frame } from "@/components/ui/Frame";
 import { Reveal } from "@/components/ui/Reveal";
-import { Badge, Eyebrow } from "@/components/ui/SectionHeading";
+import { Badge } from "@/components/ui/SectionHeading";
 import { nameMeaning } from "@/lib/content";
 
 function Chips({ items, label }: { items: string[]; label: string }) {
@@ -21,9 +21,8 @@ export function NameMeaning() {
     <section aria-labelledby="name-title" className="relative overflow-hidden py-20 sm:py-28">
       <Container>
         <Reveal className="text-center">
-          <Eyebrow>{nameMeaning.eyebrow}</Eyebrow>
-          <h2 id="name-title" className="sr-only">
-            El significado del nombre CromIA
+          <h2 id="name-title" className="text-title font-semibold text-fg">
+            {nameMeaning.title}
           </h2>
         </Reveal>
 

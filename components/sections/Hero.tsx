@@ -18,17 +18,9 @@ export function Hero() {
       />
 
       <Container className="flex flex-1 flex-col items-center justify-center text-center">
-        <p
-          className="enter-up inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-4 py-1.5 text-xs font-medium text-fg/80 ring-1 ring-white/10 backdrop-blur sm:text-[0.8125rem]"
-          style={{ animationDelay: "80ms" }}
-        >
-          <span className="size-1.5 rounded-full bg-green shadow-[0_0_10px_2px_rgba(16,185,129,0.6)]" aria-hidden="true" />
-          {hero.eyebrow}
-        </p>
-
         <h1
           id="hero-title"
-          className="mt-6 max-w-5xl text-[clamp(2.5rem,5.3vw,4.75rem)] font-semibold leading-none tracking-[-0.05em] text-fg-soft"
+          className="max-w-5xl text-[clamp(2.5rem,5.3vw,4.75rem)] font-semibold leading-none tracking-[-0.05em] text-fg-soft"
         >
           Automatizamos procesos con <span className="text-green">IA</span> para impulsar{" "}
           <span className="text-accent animate-accent-flare">el futuro de tu negocio.</span>

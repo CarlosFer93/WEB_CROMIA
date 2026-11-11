@@ -96,7 +96,6 @@ export function Pillars() {
       <Container>
         <SectionHeading
           id="servicios-title"
-          eyebrow={pillars.eyebrow}
           title={
             <>
               {pillars.title}

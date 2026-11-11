@@ -47,18 +47,13 @@ En `lib/site-config.ts`, cada canal tiene esta forma:
 
 ```ts
 email: {
-  value: "correo@ejemplo.com",          // texto visible
-  href: "mailto:correo@ejemplo.com",    // enlace
-  pending: true,                        // true = placeholder
+  value: "admin@cromiacol.co",          // texto visible
+  href: "mailto:admin@cromiacol.co",    // enlace
+  pending: false,                       // true = placeholder
 },
 ```
 
-Mientras `pending` sea `true`:
-- el footer muestra la etiqueta **"Por definir"** junto al dato;
-- el dato **no** aparece en la sección de contacto ni en los datos estructurados (SEO).
-
-Cuando tengas el dato real, reemplaza `value` y `href` y cambia `pending` a `false`.
-Para WhatsApp usa el formato `https://wa.me/57XXXXXXXXXX` (sin `+` ni espacios).
+Mientras `pending` sea `true`, el canal **no se muestra** en el sitio ni se incluye en los datos estructurados (SEO). Hoy solo **WhatsApp** está pendiente: cuando tengas el número, reemplaza `value` y `href` (formato `https://wa.me/57XXXXXXXXXX`, sin `+` ni espacios) y cambia `pending` a `false`.
 
 ### Logo
 

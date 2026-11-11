@@ -6,22 +6,40 @@ import { ecosystem, sectors, type Sector } from "@/lib/content";
 
 /** Posiciones (en %) de los 6 sectores alrededor del centro en desktop. */
 const positions = [
-  { left: "16%", top: "18%" },
-  { left: "9%", top: "50%" },
-  { left: "16%", top: "82%" },
-  { left: "84%", top: "18%" },
-  { left: "91%", top: "50%" },
-  { left: "84%", top: "82%" },
+  { left: "18%", top: "14%" },
+  { left: "12%", top: "50%" },
+  { left: "18%", top: "86%" },
+  { left: "82%", top: "14%" },
+  { left: "88%", top: "50%" },
+  { left: "82%", top: "86%" },
 ];
 
-function SectorChip({ sector }: { sector: Sector }) {
+/**
+ * Sector "flotante": sube y baja suavemente (desfasado por índice) y al pasar el puntero
+ * crece y se ilumina por debajo con un resplandor azul → verde.
+ */
+function SectorChip({ sector, index, full = false }: { sector: Sector; index: number; full?: boolean }) {
   const Icon = sector.icon;
   return (
-    <div className="flex items-center gap-3 rounded-full bg-black/60 py-2 pl-2 pr-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_0_1px_rgba(255,255,255,0.1),0_20px_40px_-20px_rgba(0,0,0,0.9)] backdrop-blur-md">
-      <span className="knob size-9 text-fg" aria-hidden="true">
-        <Icon className="size-4" />
-      </span>
-      <span className="text-sm font-medium text-fg">{sector.name}</span>
+    <div
+      className={`animate-float group relative ${full ? "w-full" : ""}`}
+      style={{ animationDelay: `${-index * 0.9}s`, animationDuration: `${5.5 + (index % 3) * 0.8}s` }}
+    >
+      {/* Resplandor inferior (aparece en hover) */}
+      <span
+        className="pointer-events-none absolute inset-x-6 -bottom-5 h-10 rounded-full bg-linear-to-r from-blue to-green opacity-0 blur-2xl transition-opacity duration-(--duration-slow) group-hover:opacity-90"
+        aria-hidden="true"
+      />
+      <div
+        className={`relative flex items-center gap-4 rounded-full bg-black/70 py-3 pl-3 pr-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_0_1px_rgba(255,255,255,0.12),0_28px_50px_-22px_rgba(0,0,0,0.95)] backdrop-blur-md transition-[transform,box-shadow] duration-300 ease-(--ease-out-expo) group-hover:scale-110 group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_0_0_1px_rgba(96,165,250,0.5),0_18px_40px_-12px_rgba(16,185,129,0.55)] motion-reduce:transition-none ${
+          full ? "w-full" : ""
+        }`}
+      >
+        <span className="knob size-12 text-fg transition-colors duration-300 group-hover:text-green-soft" aria-hidden="true">
+          <Icon className="size-6" />
+        </span>
+        <span className="text-lg font-semibold tracking-[-0.02em] text-fg">{sector.name}</span>
+      </div>
     </div>
   );
 }
@@ -62,13 +80,12 @@ export function Ecosystem() {
         <SectionHeading
           id="sectores-title"
           align="center"
-          eyebrow={ecosystem.eyebrow}
           title={ecosystem.title}
           subtitle={ecosystem.subtitle}
         />
 
         {/* Desktop: diagrama radial */}
-        <Reveal className="relative mx-auto mt-16 hidden h-[480px] max-w-5xl lg:block">
+        <Reveal className="relative mx-auto mt-16 hidden h-[520px] max-w-5xl lg:block">
           <div className="animate-spin-slow absolute inset-0" aria-hidden="true">
             <OrbitPattern />
           </div>
@@ -79,10 +96,10 @@ export function Ecosystem() {
             {sectors.map((s, i) => (
               <li
                 key={s.name}
-                className="absolute -translate-x-1/2 -translate-y-1/2"
+                className="absolute -translate-x-1/2 -translate-y-1/2 hover:z-10"
                 style={{ left: positions[i].left, top: positions[i].top }}
               >
-                <SectorChip sector={s} />
+                <SectorChip sector={s} index={i} />
               </li>
             ))}
           </ul>
@@ -93,10 +110,10 @@ export function Ecosystem() {
           <div className="flex justify-center">
             <CenterBadge />
           </div>
-          <ul className="mt-10 grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 md:grid-cols-3" aria-label="Sectores">
+          <ul className="mt-10 grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2 md:grid-cols-3" aria-label="Sectores">
             {sectors.map((s, i) => (
-              <Reveal as="li" key={s.name} delay={i * 0.04}>
-                <SectorChip sector={s} />
+              <Reveal as="li" key={s.name} delay={i * 0.04} className="relative hover:z-10">
+                <SectorChip sector={s} index={i} full />
               </Reveal>
             ))}
           </ul>

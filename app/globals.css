@@ -254,6 +254,16 @@ body {
   }
 }
 
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
 @keyframes enter-up {
   from {
     opacity: 0;
@@ -280,6 +290,9 @@ body {
   }
   .animate-chrome-flare {
     animation: chrome-flare 3.6s linear infinite;
+  }
+  .animate-float {
+    animation: float-y 6s ease-in-out infinite;
   }
   .animate-glow-drift {
     animation: glow-drift 14s ease-in-out infinite;

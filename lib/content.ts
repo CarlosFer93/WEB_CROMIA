@@ -101,7 +101,7 @@ export const why = {
 
 /* 4 · El significado del nombre ───────────────────────── */
 export const nameMeaning = {
-  eyebrow: "El significado del nombre",
+  title: "Nuestra identidad",
   crom: ["Diversidad", "Evolución", "Transformación", "Adaptabilidad"],
   ia: ["Inteligencia Artificial", "Automatización", "Datos"],
   body: "CromIA combina la diversidad de los mercados (Crom) con el poder de la Inteligencia Artificial (IA) para transformar procesos y generar un impacto real.",
@@ -110,7 +110,6 @@ export const nameMeaning = {
 
 /* 5 · Servicios / pilares ─────────────────────────────── */
 export const pillars = {
-  eyebrow: "Servicios",
   title: "No solo implementamos IA.",
   titleAccent: "Transformamos procesos.",
   items: [
@@ -154,7 +153,6 @@ export const sectors: Sector[] = [
 ];
 
 export const ecosystem = {
-  eyebrow: "Sectores",
   title: "Un ecosistema multisectorial",
   subtitle: "Una misma inteligencia. Diferentes aplicaciones.",
 };

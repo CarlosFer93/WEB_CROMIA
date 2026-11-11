@@ -4,9 +4,8 @@
  * ─────────────────────────────────────────────────────────────
  *
  * Los campos marcados con `pending: true` son PLACEHOLDERS:
- * se muestran en el footer con la etiqueta "Por definir" y NO se
- * incluyen en los datos estructurados (SEO). Cuando tengas el dato
- * real, reemplaza `value` y `href` y cambia `pending` a `false`.
+ * NO se muestran en el sitio ni se incluyen en los datos estructurados (SEO).
+ * Cuando tengas el dato real, reemplaza `value` y `href` y cambia `pending` a `false`.
  */
 
 export type ContactChannel = {
@@ -56,11 +55,10 @@ export const siteConfig = {
   ],
 
   contact: {
-    // TODO: reemplaza por el correo real de CromIA
     email: {
-      value: "correo@ejemplo.com",
-      href: "mailto:correo@ejemplo.com",
-      pending: true,
+      value: "admin@cromiacol.co",
+      href: "mailto:admin@cromiacol.co",
+      pending: false,
     },
     // TODO: reemplaza por el número real (formato wa.me sin + ni espacios)
     whatsapp: {
@@ -71,17 +69,15 @@ export const siteConfig = {
   } satisfies Record<string, ContactChannel>,
 
   social: {
-    // TODO: reemplaza por la URL real de LinkedIn
     linkedin: {
       value: "LinkedIn",
-      href: "https://www.linkedin.com/",
-      pending: true,
+      href: "https://www.linkedin.com/company/cromiacol",
+      pending: false,
     },
-    // TODO: reemplaza por la URL real de Instagram
     instagram: {
       value: "Instagram",
-      href: "https://www.instagram.com/",
-      pending: true,
+      href: "https://www.instagram.com/cromia_col",
+      pending: false,
     },
   } satisfies Record<string, ContactChannel>,
 } as const;
