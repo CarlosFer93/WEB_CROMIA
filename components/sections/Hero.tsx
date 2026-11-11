@@ -1,8 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { HeroBackdrop } from "@/components/ui/HeroBackdrop";
-import { Isotipo } from "@/components/ui/Logo";
+import { SpotlightWordmark } from "@/components/ui/SpotlightWordmark";
 import { hero, sectors } from "@/lib/content";
 
 export function Hero() {
@@ -10,25 +9,27 @@ export function Hero() {
     <section
       id="inicio"
       aria-labelledby="hero-title"
-      className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-canvas pb-20 pt-[calc(var(--header-h)+2.5rem)]"
+      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-canvas pt-[calc(var(--header-h)+2rem)] sm:pt-[calc(var(--header-h)+2.5rem)]"
     >
-      <HeroBackdrop className="-z-10" />
+      {/* Fondo estático y liviano: un solo degradado, sin animación ni blur */}
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_55%_at_50%_0%,rgba(37,99,235,0.22),transparent_70%),radial-gradient(ellipse_50%_40%_at_70%_100%,rgba(16,185,129,0.12),transparent_70%)]"
+        aria-hidden="true"
+      />
 
-      <Container className="flex flex-col items-center text-center">
-        <div className="enter-up relative">
-          <div className="absolute inset-0 -z-10 scale-150 rounded-full bg-blue/30 blur-3xl" aria-hidden="true" />
-          <Isotipo size={112} className="size-20 drop-shadow-[0_18px_40px_rgba(37,99,235,0.55)] sm:size-28" />
-        </div>
-
+      <Container className="flex flex-1 flex-col items-center justify-center text-center">
         <p
-          className="enter-up mt-8 inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-4 py-1.5 text-xs font-medium text-fg/80 ring-1 ring-white/10 backdrop-blur sm:text-[0.8125rem]"
+          className="enter-up inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-4 py-1.5 text-xs font-medium text-fg/80 ring-1 ring-white/10 backdrop-blur sm:text-[0.8125rem]"
           style={{ animationDelay: "80ms" }}
         >
           <span className="size-1.5 rounded-full bg-green shadow-[0_0_10px_2px_rgba(16,185,129,0.6)]" aria-hidden="true" />
           {hero.eyebrow}
         </p>
 
-        <h1 id="hero-title" className="mt-6 max-w-5xl text-display font-semibold text-fg-soft">
+        <h1
+          id="hero-title"
+          className="mt-6 max-w-5xl text-[clamp(2.5rem,5.3vw,4.75rem)] font-semibold leading-none tracking-[-0.05em] text-fg-soft"
+        >
           Automatizamos procesos con <span className="text-green">IA</span> para impulsar{" "}
           <span className="text-accent animate-accent-flare">el futuro de tu negocio.</span>
         </h1>
@@ -41,7 +42,7 @@ export function Hero() {
         </p>
 
         <div
-          className="enter-up mt-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
+          className="enter-up mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
           style={{ animationDelay: "240ms" }}
         >
           <ButtonLink href={hero.primaryCta.href}>
@@ -54,7 +55,7 @@ export function Hero() {
         </div>
 
         <ul
-          className="enter-up mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-[0.8125rem] text-white/55"
+          className="enter-up mt-8 flex flex-wrap items-center justify-center gap-x-5 gap-y-3 text-[0.8125rem] text-white/55"
           style={{ animationDelay: "320ms" }}
           aria-label="Sectores en los que trabajamos"
         >
@@ -69,6 +70,8 @@ export function Hero() {
           })}
         </ul>
       </Container>
+
+      <SpotlightWordmark className="enter-up mt-10" sizeClass="text-[18vw]" restingSpot={{ x: "50%", y: "45%" }} />
     </section>
   );
 }

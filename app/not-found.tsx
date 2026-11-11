@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
-import { HeroBackdrop } from "@/components/ui/HeroBackdrop";
 import { Isotipo } from "@/components/ui/Logo";
 
 export const metadata: Metadata = {
@@ -15,7 +14,10 @@ export default function NotFound() {
       aria-labelledby="nf-title"
       className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-canvas px-4 pb-16 pt-[calc(var(--header-h)+2rem)] text-center"
     >
-      <HeroBackdrop className="-z-10" />
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_70%_55%_at_50%_0%,rgba(37,99,235,0.22),transparent_70%)]"
+        aria-hidden="true"
+      />
       <div className="max-w-xl">
         <Isotipo size={80} className="mx-auto drop-shadow-[0_18px_40px_rgba(37,99,235,0.55)]" />
         <p className="text-chrome animate-chrome-flare mt-8 text-[clamp(5rem,16vw,8rem)] font-semibold leading-none tracking-[-0.06em]">
